@@ -1,0 +1,39 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@netlify/blobs"]
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/submissions"
+  to = "/.netlify/functions/submissions"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/submissions.csv"
+  to = "/.netlify/functions/submissions-csv"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; script-src 'self'; style-src 'self'"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"

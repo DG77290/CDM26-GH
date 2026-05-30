@@ -1,0 +1,13 @@
+services:
+  pronostics:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "4175:4175"
+    env_file:
+      - .env
+    volumes:
+      - pronostics-data:/data
+
+volumes:
+  pronostics-data:
